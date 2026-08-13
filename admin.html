@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Админ-панель — ZOOMLION Бетононасосы</title>
+  <link rel="stylesheet" href="./src/css/style.css">
+</head>
+<body style="background-color: #F1F5F9;">
+
+  <!-- Admin Header -->
+  <header class="header" style="background: #FFFFFF; border-bottom: 1px solid #E2E8F0;">
+    <div class="container header-content" style="height: 70px;">
+      <div class="logo">
+        <span class="logo-badge" style="background: #0F172A;">ADMIN</span>
+        <span style="font-size: 1.2rem;">Управление каталогом ZOOMLION</span>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn btn-outline" id="exportJsonBtn">
+          💾 Скачать models.json
+        </button>
+        <button class="btn btn-outline" id="resetDataBtn" style="color: #DC2626; border-color: #FCA5A5;">
+          🔄 Сбросить к исходным
+        </button>
+        <a href="./index.html" class="btn btn-primary" target="_blank">
+          Перейти на сайт ↗
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 40px 24px 80px;">
+    <!-- Top Action Bar -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; flex-wrap: wrap; gap: 16px;">
+      <div>
+        <h1 style="font-size: 2rem; margin-bottom: 4px;">Каталог автобетононасосов</h1>
+        <p style="color: var(--text-muted);">Редактирование фото, названий, ТТХ, цен и статусов наличия. Все изменения мгновенно отражаются на сайте.</p>
+      </div>
+
+      <button class="btn btn-primary" id="addModelBtn" style="padding: 12px 24px; font-size: 1rem;">
+        + Добавить автобетононасос
+      </button>
+    </div>
+
+    <!-- Models Table Card -->
+    <div style="background: #FFFFFF; border-radius: 16px; border: 1px solid #E2E8F0; box-shadow: var(--shadow-md); overflow: hidden;">
+      <div style="padding: 20px 24px; border-bottom: 1px solid #E2E8F0; display: flex; justify-content: space-between; align-items: center;">
+        <input type="text" id="adminSearchInput" class="filter-input" placeholder="Поиск по названию или шасси..." style="max-width: 360px;">
+        <div style="font-size: 0.9rem; color: var(--text-muted);">
+          Всего позиций: <strong id="adminCountText" style="color: var(--text-main);">0</strong>
+        </div>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Фото</th>
+              <th>Модель & Шасси</th>
+              <th>Высота / Сложение</th>
+              <th>Стоимость (DDP)</th>
+              <th>Статус / Склад</th>
+              <th style="text-align: right;">Действия</th>
+            </tr>
+          </thead>
+          <tbody id="adminTableBody">
+            <!-- Rendered by admin.js -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- Edit / Create Model Modal -->
+  <div class="modal-backdrop" id="editModal">
+    <div class="modal-window" style="max-width: 750px;">
+      <button class="modal-close-btn" id="editModalCloseBtn">✕</button>
+      <div class="modal-content">
+        <h2 style="font-size: 1.8rem; margin-bottom: 6px;" id="formModalTitle">Редактировать модель</h2>
+        <p style="color: var(--text-muted); margin-bottom: 24px;">Заполните параметры бетононасоса для отображения в каталоге</p>
+
+        <form id="modelForm">
+          <input type="hidden" id="fieldId">
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 16px;">
+            <div class="filter-group">
+              <label class="filter-label">Название модели *</label>
+              <input type="text" id="fieldName" class="filter-input" placeholder="ZOOMLION 57X-6RZ" required>
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label">Марка шасси *</label>
+              <select id="fieldChassisBrand" class="filter-select" required>
+                <option value="SITRAK">SITRAK</option>
+                <option value="SCANIA">SCANIA</option>
+                <option value="ISUZU">ISUZU</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+            <div class="filter-group">
+              <label class="filter-label">Полное наименование шасси</label>
+              <input type="text" id="fieldChassis" class="filter-input" placeholder="SITRAK (8x4)" required>
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label">Колесная формула</label>
+              <select id="fieldWheelFormula" class="filter-select" required>
+                <option value="4x2">4x2</option>
+                <option value="6x4">6x4</option>
+                <option value="8x4">8x4</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label">Тип стрелы</label>
+              <select id="fieldFoldingType" class="filter-select" required>
+                <option value="5RZ">5RZ</option>
+                <option value="6RZ">6RZ</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+            <div class="filter-group">
+              <label class="filter-label">Высота стрелы (м) *</label>
+              <input type="number" id="fieldBoomHeight" class="filter-input" placeholder="57" required>
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label">Производит-сть (м³/ч)</label>
+              <input type="number" id="fieldOutput" class="filter-input" placeholder="180" required>
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label">Год выпуска</label>
+              <input type="number" id="fieldYear" class="filter-input" placeholder="2025" required>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 16px;">
+            <div class="filter-group">
+              <label class="filter-label">Цена в рублях (для расчетов) *</label>
+              <input type="number" id="fieldPrice" class="filter-input" placeholder="35600000" required>
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label">Форматированная цена *</label>
+              <input type="text" id="fieldPriceFormatted" class="filter-input" placeholder="35 600 000 ₽" required>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 16px;">
+            <div class="filter-group">
+              <label class="filter-label">Статус поставки *</label>
+              <input type="text" id="fieldAvailability" class="filter-input" placeholder="В наличии" required>
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label">Склад / Город *</label>
+              <input type="text" id="fieldLocation" class="filter-input" placeholder="Пермь" required>
+            </div>
+          </div>
+
+          <div class="filter-group" style="margin-bottom: 16px;">
+            <label class="filter-label">Ссылка на фото товара (URL или имя файла) *</label>
+            <input type="text" id="fieldImage" class="filter-input" placeholder="ZOOMLION 57 метров на базе шасси SCANIA 8x4(1).jpg или https://..." required>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 16px;">
+            <div class="filter-group">
+              <label class="filter-label">Ответственный менеджер</label>
+              <input type="text" id="fieldManager" class="filter-input" placeholder="Роженцев Артем Викторович">
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label">Телефон менеджера</label>
+              <input type="text" id="fieldPhone" class="filter-input" placeholder="+7 906 113 51 16">
+            </div>
+          </div>
+
+          <div class="filter-group" style="margin-bottom: 24px;">
+            <label class="filter-label">Преимущества (через запятую)</label>
+            <input type="text" id="fieldHighlights" class="filter-input" placeholder="Флагманская стрела 57м, Шведская сталь, В наличии">
+          </div>
+
+          <div style="display: flex; gap: 16px; justify-content: flex-end;">
+            <button type="button" class="btn btn-outline" id="cancelFormBtn">Отмена</button>
+            <button type="submit" class="btn btn-primary" style="padding: 12px 32px;">Сохранить изменения</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="./src/js/admin.js"></script>
+</body>
+</html>

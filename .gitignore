@@ -1,0 +1,13 @@
+# Word lock files
+~$*.doc*
+~$*.xls*
+
+# OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# IDE & system files
+.vscode/
+.idea/
+*.log
