@@ -23,8 +23,92 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // DOM Elements
-  const gridContainer = document.getElementById('modelsGrid');
+  // Apply dynamic Site Settings (Header, Advantages, Footer)
+  function applySiteSettings() {
+    const defaultSettings = {
+      header: {
+        phoneLabel: "Отдел продаж:",
+        phone: "+7 (906) 113-51-16",
+        phoneRaw: "+79061135116",
+        quoteBtnText: "Запросить КП"
+      },
+      advantages: {
+        title: "Почему выбирают АБН ZOOMLION",
+        subtitle: "Мировой лидер в производстве бетоноподающей техники с передовой гидравликой и высочайшей надежностью",
+        items: [
+          {
+            title: "Инновационные стрелы 5RZ и 6RZ",
+            text: "Увеличенная гибкость раскладывания, минимальная раскачка при подаче бетона, высокопрочная шведская сталь."
+          },
+          {
+            title: "Надежные шасси SITRAK & SCANIA",
+            text: "Адаптированы к российским условиям эксплуатации, надежные двигатели, максимальный комфорт оператора."
+          },
+          {
+            title: "Производительность до 180 м³/ч",
+            text: "Мощные насосные группы, диаметр цилиндров до 260 мм, открытая гидравлическая система с эффективным охлаждением."
+          }
+        ]
+      },
+      footer: {
+        manager1: "Роженцев Артем Викторович: +7 906 113 51 16",
+        manager2: "Рылов Роман: +7 967 246 40 60",
+        locations: "Пермь, Забайкальск, Москва"
+      }
+    };
+
+    let settings = defaultSettings;
+    const saved = localStorage.getItem('zoomlion_site_settings');
+    if (saved) {
+      try { settings = JSON.parse(saved); } catch (e) {}
+    }
+
+    // Header
+    const hLabel = document.getElementById('headerPhoneLabel');
+    const hText = document.getElementById('headerPhoneText');
+    const hLink = document.getElementById('headerPhoneLink');
+    const hBtn = document.getElementById('headerQuoteBtn');
+    if (hLabel) hLabel.textContent = settings.header?.phoneLabel || defaultSettings.header.phoneLabel;
+    if (hText) hText.textContent = settings.header?.phone || defaultSettings.header.phone;
+    if (hLink) hLink.href = `tel:${settings.header?.phoneRaw || defaultSettings.header.phoneRaw}`;
+    if (hBtn) hBtn.textContent = settings.header?.quoteBtnText || defaultSettings.header.quoteBtnText;
+
+    // Advantages
+    const advTitle = document.getElementById('advSectionTitle');
+    const advSubtitle = document.getElementById('advSectionSubtitle');
+    if (advTitle) advTitle.textContent = settings.advantages?.title || defaultSettings.advantages.title;
+    if (advSubtitle) advSubtitle.textContent = settings.advantages?.subtitle || defaultSettings.advantages.subtitle;
+
+    const items = settings.advantages?.items || defaultSettings.advantages.items;
+    if (items[0]) {
+      const t1 = document.getElementById('adv1Title');
+      const x1 = document.getElementById('adv1Text');
+      if (t1) t1.textContent = items[0].title;
+      if (x1) x1.textContent = items[0].text;
+    }
+    if (items[1]) {
+      const t2 = document.getElementById('adv2Title');
+      const x2 = document.getElementById('adv2Text');
+      if (t2) t2.textContent = items[1].title;
+      if (x2) x2.textContent = items[1].text;
+    }
+    if (items[2]) {
+      const t3 = document.getElementById('adv3Title');
+      const x3 = document.getElementById('adv3Text');
+      if (t3) t3.textContent = items[2].title;
+      if (x3) x3.textContent = items[2].text;
+    }
+
+    // Footer
+    const fm1 = document.getElementById('footerManager1');
+    const fm2 = document.getElementById('footerManager2');
+    const floc = document.getElementById('footerLocations');
+    if (fm1) fm1.textContent = settings.footer?.manager1 || defaultSettings.footer.manager1;
+    if (fm2) fm2.textContent = settings.footer?.manager2 || defaultSettings.footer.manager2;
+    if (floc) floc.textContent = `Склады наличия: ${settings.footer?.locations || defaultSettings.footer.locations}`;
+  }
+
+  applySiteSettings();
   const searchInput = document.getElementById('searchInput');
   const heightFilter = document.getElementById('heightFilter');
   const chassisFilter = document.getElementById('chassisFilter');
@@ -66,7 +150,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       card.innerHTML = `
         <div class="card-img-container">
-          <img src="${model.image}" alt="${model.name}" class="card-img" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1541888946425-d0fbb186a5b2?auto=format&fit=crop&w=800&q=80'">
+          <a href="./product.html?id=${model.id}">
+            <img src="${model.image}" alt="${model.name}" class="card-img" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1541888946425-d0fbb186a5b2?auto=format&fit=crop&w=800&q=80'">
+          </a>
           <div class="card-badge-top">
             <span class="badge ${badgeClass}">${model.availability}</span>
           </div>
@@ -75,7 +161,9 @@ document.addEventListener('DOMContentLoaded', async () => {
           </div>
         </div>
         <div class="card-body">
-          <h3 class="card-title">${model.name}</h3>
+          <h3 class="card-title">
+            <a href="./product.html?id=${model.id}">${model.name}</a>
+          </h3>
           <div class="card-chassis">Шасси: <strong>${model.chassis}</strong></div>
 
           <div class="card-specs-mini">
@@ -102,9 +190,9 @@ document.addEventListener('DOMContentLoaded', async () => {
               <span class="price-lbl">Стоимость DDP:</span>
               <span class="price-amount">${model.price_formatted}</span>
             </div>
-            <button class="btn btn-primary btn-detail" data-id="${model.id}">
-              Характеристики
-            </button>
+            <a href="./product.html?id=${model.id}" class="btn btn-primary">
+              Характеристики ↗
+            </a>
           </div>
         </div>
       `;

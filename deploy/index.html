@@ -34,13 +34,13 @@
       </nav>
 
       <div class="header-actions">
-        <a href="tel:+79061135116" class="phone-link">
+        <a href="tel:+79061135116" class="phone-link" id="headerPhoneLink">
           <div class="phone-icon">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
           </div>
           <div>
-            <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: normal;">Отдел продаж:</div>
-            +7 (906) 113-51-16
+            <div id="headerPhoneLabel" style="font-size: 0.75rem; color: var(--text-muted); font-weight: normal;">Отдел продаж:</div>
+            <span id="headerPhoneText">+7 (906) 113-51-16</span>
           </div>
         </a>
         <button class="btn btn-primary btn-quote-trigger" id="headerQuoteBtn">
@@ -239,8 +239,8 @@
       <div class="container">
         <div class="section-header">
           <span class="badge badge-green">Преимущества бренда</span>
-          <h2 class="section-title">Почему выбирают АБН ZOOMLION</h2>
-          <p class="section-subtitle">Мировой лидер в производстве бетоноподающей техники с передовой гидравликой и высочайшей надежностью</p>
+          <h2 class="section-title" id="advSectionTitle">Почему выбирают АБН ZOOMLION</h2>
+          <p class="section-subtitle" id="advSectionSubtitle">Мировой лидер в производстве бетоноподающей техники с передовой гидравликой и высочайшей надежностью</p>
         </div>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px;">
@@ -248,24 +248,24 @@
             <div style="width: 56px; height: 56px; background: var(--zoomlion-green-light); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7FB300" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
             </div>
-            <h3 style="font-size: 1.3rem; margin-bottom: 10px;">Инновационные стрелы 5RZ и 6RZ</h3>
-            <p style="color: var(--text-muted); font-size: 0.95rem;">Увеличенная гибкость раскладывания, минимальная раскачка при подаче бетона, высокопрочная шведская сталь.</p>
+            <h3 style="font-size: 1.3rem; margin-bottom: 10px;" id="adv1Title">Инновационные стрелы 5RZ и 6RZ</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;" id="adv1Text">Увеличенная гибкость раскладывания, минимальная раскачка при подаче бетона, высокопрочная шведская сталь.</p>
           </div>
 
           <div style="background: #fff; padding: 32px; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: var(--shadow-md);">
             <div style="width: 56px; height: 56px; background: var(--accent-blue-light); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0284C7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
             </div>
-            <h3 style="font-size: 1.3rem; margin-bottom: 10px;">Надежные шасси SITRAK & SCANIA</h3>
-            <p style="color: var(--text-muted); font-size: 0.95rem;">Адаптированы к российским условиям эксплуатации, надежные двигатели, максимальный комфорт оператора.</p>
+            <h3 style="font-size: 1.3rem; margin-bottom: 10px;" id="adv2Title">Надежные шасси SITRAK & SCANIA</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;" id="adv2Text">Адаптированы к российским условиям эксплуатации, надежные двигатели, максимальный комфорт оператора.</p>
           </div>
 
           <div style="background: #fff; padding: 32px; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: var(--shadow-md);">
             <div style="width: 56px; height: 56px; background: var(--accent-amber-light); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
             </div>
-            <h3 style="font-size: 1.3rem; margin-bottom: 10px;">Производительность до 180 м³/ч</h3>
-            <p style="color: var(--text-muted); font-size: 0.95rem;">Мощные насосные группы, диаметр цилиндров до 260 мм, открытая гидравлическая система с эффективным охлаждением.</p>
+            <h3 style="font-size: 1.3rem; margin-bottom: 10px;" id="adv3Title">Производительность до 180 м³/ч</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;" id="adv3Text">Мощные насосные группы, диаметр цилиндров до 260 мм, открытая гидравлическая система с эффективным охлаждением.</p>
           </div>
         </div>
       </div>
@@ -338,15 +338,15 @@
           <ul style="list-style: none; padding: 0; font-size: 0.9rem;">
             <li style="margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7FB300" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-              <span><strong>Роженцев Артем Викторович</strong>: +7 906 113 51 16</span>
+              <span id="footerManager1">Роженцев Артем Викторович: +7 906 113 51 16</span>
             </li>
             <li style="margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7FB300" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-              <span><strong>Рылов Роман</strong>: +7 967 246 40 60</span>
+              <span id="footerManager2">Рылов Роман: +7 967 246 40 60</span>
             </li>
             <li style="display: flex; align-items: center; gap: 8px;">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0284C7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-              <span><strong>Склады наличия:</strong> Пермь, Забайкальск, Москва</span>
+              <span id="footerLocations">Склады наличия: Пермь, Забайкальск, Москва</span>
             </li>
           </ul>
         </div>

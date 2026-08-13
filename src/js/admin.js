@@ -85,7 +85,9 @@ document.addEventListener('DOMContentLoaded', async () => {
           <img src="${m.image}" alt="${m.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1541888946425-d0fbb186a5b2?auto=format&fit=crop&w=300&q=80'">
         </td>
         <td>
-          <div style="font-weight: 700; color: #0F172A; font-size: 1.05rem;">${m.name}</div>
+          <a href="./product.html?id=${m.id}" target="_blank" style="font-weight: 700; color: #0F172A; font-size: 1.05rem; text-decoration: none;" onmouseover="this.style.color='#7FB300'" onmouseout="this.style.color='#0F172A'">
+            ${m.name} ↗
+          </a>
           <div style="font-size: 0.85rem; color: #64748B;">${m.chassis}</div>
         </td>
         <td>
@@ -276,13 +278,143 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (editModalCloseBtn) editModalCloseBtn.addEventListener('click', () => editModal.classList.remove('active'));
   if (cancelFormBtn) cancelFormBtn.addEventListener('click', () => editModal.classList.remove('active'));
 
-  // Reset Data to Default
+  // --- TABS & SITE SETTINGS LOGIC ---
+  const tabCatalogBtn = document.getElementById('tabCatalogBtn');
+  const tabSettingsBtn = document.getElementById('tabSettingsBtn');
+  const catalogTab = document.getElementById('catalogTab');
+  const settingsTab = document.getElementById('settingsTab');
+  const siteSettingsForm = document.getElementById('siteSettingsForm');
+
+  const defaultSettings = {
+    header: {
+      phoneLabel: "Отдел продаж:",
+      phone: "+7 (906) 113-51-16",
+      phoneRaw: "+79061135116",
+      quoteBtnText: "Запросить КП"
+    },
+    advantages: {
+      title: "Почему выбирают АБН ZOOMLION",
+      subtitle: "Мировой лидер в производстве бетоноподающей техники с передовой гидравликой и высочайшей надежностью",
+      items: [
+        {
+          title: "Инновационные стрелы 5RZ и 6RZ",
+          text: "Увеличенная гибкость раскладывания, минимальная раскачка при подаче бетона, высокопрочная шведская сталь."
+        },
+        {
+          title: "Надежные шасси SITRAK & SCANIA",
+          text: "Адаптированы к российским условиям эксплуатации, надежные двигатели, максимальный комфорт оператора."
+        },
+        {
+          title: "Производительность до 180 м³/ч",
+          text: "Мощные насосные группы, диаметр цилиндров до 260 мм, открытая гидравлическая система с эффективным охлаждением."
+        }
+      ]
+    },
+    footer: {
+      manager1: "Роженцев Артем Викторович: +7 906 113 51 16",
+      manager2: "Рылов Роман: +7 967 246 40 60",
+      locations: "Пермь, Забайкальск, Москва"
+    }
+  };
+
+  // Switch Tabs
+  if (tabCatalogBtn && tabSettingsBtn) {
+    tabCatalogBtn.addEventListener('click', () => {
+      tabCatalogBtn.classList.add('active');
+      tabSettingsBtn.classList.remove('active');
+      catalogTab.style.display = 'block';
+      settingsTab.style.display = 'none';
+    });
+
+    tabSettingsBtn.addEventListener('click', () => {
+      tabSettingsBtn.classList.add('active');
+      tabCatalogBtn.classList.remove('active');
+      settingsTab.style.display = 'block';
+      catalogTab.style.display = 'none';
+      loadSiteSettingsForm();
+    });
+  }
+
+  // Load Settings into Form
+  function loadSiteSettingsForm() {
+    let settings = defaultSettings;
+    const saved = localStorage.getItem('zoomlion_site_settings');
+    if (saved) {
+      try { settings = JSON.parse(saved); } catch (e) {}
+    }
+
+    document.getElementById('settingHeaderPhoneLabel').value = settings.header?.phoneLabel || defaultSettings.header.phoneLabel;
+    document.getElementById('settingHeaderPhone').value = settings.header?.phone || defaultSettings.header.phone;
+    document.getElementById('settingHeaderPhoneRaw').value = settings.header?.phoneRaw || defaultSettings.header.phoneRaw;
+    document.getElementById('settingHeaderQuoteBtn').value = settings.header?.quoteBtnText || defaultSettings.header.quoteBtnText;
+
+    document.getElementById('settingAdvTitle').value = settings.advantages?.title || defaultSettings.advantages.title;
+    document.getElementById('settingAdvSubtitle').value = settings.advantages?.subtitle || defaultSettings.advantages.subtitle;
+
+    const items = settings.advantages?.items || defaultSettings.advantages.items;
+    document.getElementById('settingAdv1Title').value = items[0]?.title || '';
+    document.getElementById('settingAdv1Text').value = items[0]?.text || '';
+    document.getElementById('settingAdv2Title').value = items[1]?.title || '';
+    document.getElementById('settingAdv2Text').value = items[1]?.text || '';
+    document.getElementById('settingAdv3Title').value = items[2]?.title || '';
+    document.getElementById('settingAdv3Text').value = items[2]?.text || '';
+
+    document.getElementById('settingFooterManager1').value = settings.footer?.manager1 || defaultSettings.footer.manager1;
+    document.getElementById('settingFooterManager2').value = settings.footer?.manager2 || defaultSettings.footer.manager2;
+    document.getElementById('settingFooterLocations').value = settings.footer?.locations || defaultSettings.footer.locations;
+  }
+
+  // Save Settings Form
+  if (siteSettingsForm) {
+    siteSettingsForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const newSettings = {
+        header: {
+          phoneLabel: document.getElementById('settingHeaderPhoneLabel').value.trim(),
+          phone: document.getElementById('settingHeaderPhone').value.trim(),
+          phoneRaw: document.getElementById('settingHeaderPhoneRaw').value.trim(),
+          quoteBtnText: document.getElementById('settingHeaderQuoteBtn').value.trim()
+        },
+        advantages: {
+          title: document.getElementById('settingAdvTitle').value.trim(),
+          subtitle: document.getElementById('settingAdvSubtitle').value.trim(),
+          items: [
+            {
+              title: document.getElementById('settingAdv1Title').value.trim(),
+              text: document.getElementById('settingAdv1Text').value.trim()
+            },
+            {
+              title: document.getElementById('settingAdv2Title').value.trim(),
+              text: document.getElementById('settingAdv2Text').value.trim()
+            },
+            {
+              title: document.getElementById('settingAdv3Title').value.trim(),
+              text: document.getElementById('settingAdv3Text').value.trim()
+            }
+          ]
+        },
+        footer: {
+          manager1: document.getElementById('settingFooterManager1').value.trim(),
+          manager2: document.getElementById('settingFooterManager2').value.trim(),
+          locations: document.getElementById('settingFooterLocations').value.trim()
+        }
+      };
+
+      localStorage.setItem('zoomlion_site_settings', JSON.stringify(newSettings));
+      alert('Настройки контактов и преимуществ успешно сохранены!');
+    });
+  }
+
+  // Reset Data to Default (includes settings reset)
   if (resetDataBtn) {
     resetDataBtn.addEventListener('click', async () => {
-      if (confirm('Сбросить все данные к исходному состоянию из models.json? Все внесенные изменения будут удалены.')) {
+      if (confirm('Сбросить все данные каталога и настройки к исходному состоянию? Все изменения будут удалены.')) {
         localStorage.removeItem('zoomlion_models');
+        localStorage.removeItem('zoomlion_site_settings');
         models = [];
         await loadAdminData();
+        loadSiteSettingsForm();
       }
     });
   }
@@ -301,4 +433,5 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   loadAdminData();
+  loadSiteSettingsForm();
 });

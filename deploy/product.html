@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="pageTitle">Автобетононасос ZOOMLION — Страница товара</title>
+  <meta name="description" id="pageDescription" content="Технические характеристики, цена и условия поставки автобетононасоса ZOOMLION.">
+  
+  <link rel="stylesheet" href="./src/css/style.css">
+  
+  <style>
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      list-style: none;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      padding: 0;
+    }
+    .breadcrumb a {
+      color: var(--text-secondary);
+      transition: var(--transition-fast);
+    }
+    .breadcrumb a:hover {
+      color: var(--zoomlion-green-dark);
+    }
+    .breadcrumb-sep {
+      color: var(--text-light);
+    }
+    
+    .product-main-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 48px;
+      align-items: start;
+      margin-bottom: 60px;
+    }
+    
+    .product-gallery-box {
+      background: #FFFFFF;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-lg);
+      padding: 24px;
+    }
+    .product-main-img {
+      width: 100%;
+      height: 440px;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      display: block;
+    }
+
+    .product-buy-box {
+      background: #FFFFFF;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-lg);
+      padding: 36px;
+    }
+    
+    .price-box-large {
+      background: var(--bg-primary);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      border: 1px solid var(--border-color);
+      margin: 20px 0 28px;
+    }
+
+    .spec-grid-badges {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .spec-badge-card {
+      background: #FFFFFF;
+      padding: 20px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-md);
+      text-align: center;
+    }
+    .spec-badge-val {
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    .spec-badge-lbl {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    @media (max-width: 992px) {
+      .product-main-grid {
+        grid-template-columns: 1fr;
+      }
+      .spec-grid-badges {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-content">
+      <a href="./index.html" class="logo">
+        <span class="logo-badge">ZOOMLION</span>
+        <span>Бетононасосы</span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="./index.html#catalog" class="nav-link">Каталог АБН</a></li>
+          <li><a href="#calculator" class="nav-link">Калькулятор лизинга</a></li>
+          <li><a href="./index.html#advantages" class="nav-link">Преимущества</a></li>
+          <li><a href="#contacts" class="nav-link">Контакты</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <a href="tel:+79061135116" class="phone-link" id="headerPhoneLink">
+          <div class="phone-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+          </div>
+          <div>
+            <div id="headerPhoneLabel" style="font-size: 0.75rem; color: var(--text-muted); font-weight: normal;">Отдел продаж:</div>
+            <span id="headerPhoneText">+7 (906) 113-51-16</span>
+          </div>
+        </a>
+        <button class="btn btn-primary btn-quote-trigger" id="headerQuoteBtn">
+          Запросить КП
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top: 40px; padding-bottom: 80px;">
+
+    <!-- Breadcrumb -->
+    <ul class="breadcrumb">
+      <li><a href="./index.html">Главная</a></li>
+      <li class="breadcrumb-sep">/</li>
+      <li><a href="./index.html#catalog">Каталог АБН</a></li>
+      <li class="breadcrumb-sep">/</li>
+      <li id="breadcrumbCurrent" style="color: var(--text-main); font-weight: 600;">Загрузка...</li>
+    </ul>
+
+    <!-- Product Main Grid -->
+    <div class="product-main-grid">
+      <!-- Gallery Left -->
+      <div class="product-gallery-box">
+        <img id="productImage" src="" alt="" class="product-main-img" onerror="this.src='https://images.unsplash.com/photo-1541888946425-d0fbb186a5b2?auto=format&fit=crop&w=1200&q=80'">
+
+        <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border-color);">
+          <h4 style="font-size: 1.1rem; margin-bottom: 12px; color: var(--text-main);">Ключевые особенность модели:</h4>
+          <ul id="productHighlightsList" style="list-style: none; padding: 0; margin: 0;">
+            <!-- JS populated -->
+          </ul>
+        </div>
+      </div>
+
+      <!-- Buy Box Right -->
+      <div class="product-buy-box">
+        <div style="display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap;">
+          <span class="badge badge-green" id="productAvailability">В наличии</span>
+          <span class="badge badge-blue" id="productYear">2025 г.</span>
+          <span class="badge badge-amber" id="productWheel">8x4</span>
+        </div>
+
+        <h1 id="productTitle" style="font-size: 2.4rem; margin-bottom: 8px;">Автобетононасос ZOOMLION</h1>
+        <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 16px;">Базовое автомобильное шасси: <strong id="productChassis" style="color: var(--text-main);">SCANIA</strong></p>
+
+        <div class="price-box-large">
+          <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 4px;">Стоимость техники (DDP <span id="productLocation">Пермь</span>):</div>
+          <div id="productPriceFormatted" style="font-family: var(--font-heading); font-size: 2.4rem; font-weight: 800; color: var(--zoomlion-green-dark);">
+            35 600 000 ₽
+          </div>
+          <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 6px;">
+            Гарантия производителя: <strong id="productWarranty" style="color: var(--text-main);">12 месяцев</strong>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px;">
+          <button class="btn btn-primary btn-quote-trigger" style="width: 100%; padding: 16px; font-size: 1.1rem;">
+            Запросить коммерческое предложение
+          </button>
+          <a href="#calculator" class="btn btn-outline" style="width: 100%; padding: 14px; text-align: center; font-size: 1rem;">
+            📊 Рассчитать график лизинга
+          </a>
+        </div>
+
+        <!-- Manager Contact Card -->
+        <div style="background: #F0F9FF; border: 1px solid #BAE6FD; border-radius: var(--radius-md); padding: 20px;">
+          <div style="font-size: 0.8rem; color: #0369A1; font-weight: 600; text-transform: uppercase; margin-bottom: 6px;">Ваш персональный менеджер:</div>
+          <div id="productManagerName" style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin-bottom: 4px;">Роженцев Артем Викторович</div>
+          <div id="productManagerPhone" style="color: #0284C7; font-size: 1.05rem; font-weight: 600; margin-bottom: 12px;">+7 906 113 51 16</div>
+          <a id="productManagerPhoneLink" href="tel:+79061135116" class="btn btn-outline" style="background: #fff; border-color: #0284C7; color: #0284C7; padding: 8px 16px; font-size: 0.9rem; width: 100%; text-align: center;">
+            📞 Позвонить менеджеру
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Spec Badges Grid -->
+    <div class="spec-grid-badges">
+      <div class="spec-badge-card">
+        <div class="spec-badge-val" id="specHeight">57 м</div>
+        <div class="spec-badge-lbl">Высота подачи стрелы</div>
+      </div>
+      <div class="spec-badge-card">
+        <div class="spec-badge-val" id="specOutput">180 м³/ч</div>
+        <div class="spec-badge-lbl">Макс. производительность</div>
+      </div>
+      <div class="spec-badge-card">
+        <div class="spec-badge-val" id="specFolding">6RZ</div>
+        <div class="spec-badge-lbl">Тип сложения стрелы</div>
+      </div>
+      <div class="spec-badge-card">
+        <div class="spec-badge-val" id="specChassisFormula">8x4</div>
+        <div class="spec-badge-lbl">Колесная формула</div>
+      </div>
+      <div class="spec-badge-card">
+        <div class="spec-badge-val" id="specPressure">8.8 МПа</div>
+        <div class="spec-badge-lbl">Давление подачи бетона</div>
+      </div>
+      <div class="spec-badge-card">
+        <div class="spec-badge-val" id="specHopper">550 Л</div>
+        <div class="spec-badge-lbl">Емкость приемного бункера</div>
+      </div>
+    </div>
+
+    <!-- Full Specs Table Section -->
+    <section style="background: #FFFFFF; border-radius: var(--radius-lg); border: 1px solid var(--border-color); box-shadow: var(--shadow-lg); padding: 40px; margin-bottom: 60px;">
+      <h2 style="font-size: 1.8rem; margin-bottom: 8px;">Полные технические характеристики (ТТХ)</h2>
+      <p style="color: var(--text-muted); margin-bottom: 24px;">Спецификация насосной группы, конструкционных элементов и базового автомобиля</p>
+
+      <table class="specs-table" style="font-size: 1.05rem;">
+        <tbody id="productFullSpecsBody">
+          <!-- JS Populated -->
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Embedded Leasing Calculator -->
+    <section class="calc-section" id="calculator" style="background: transparent; padding: 0; margin-bottom: 80px; border: none;">
+      <div class="section-header">
+        <span class="badge badge-amber">Лизинг для бизнеса</span>
+        <h2 class="section-title">Расчет окупаемости и лизинга</h2>
+        <p class="section-subtitle">Параметры автоматически подстроены под цену этой модели</p>
+      </div>
+
+      <div class="calc-box" style="box-shadow: var(--shadow-lg);">
+        <div>
+          <div class="filter-group" style="margin-bottom: 24px;">
+            <label class="filter-label">Модель спецтехники</label>
+            <input type="text" id="calcModelNameDisplay" class="filter-input" readonly style="background: #F1F5F9; font-weight: 700;">
+          </div>
+
+          <div class="range-group">
+            <div class="range-header">
+              <span>Первоначальный взнос (аванс):</span>
+              <span id="advanceValText" style="color: var(--zoomlion-green-dark); font-weight: 700;">20%</span>
+            </div>
+            <input type="range" id="advanceRange" class="range-slider" min="10" max="50" step="5" value="20">
+          </div>
+
+          <div class="range-group">
+            <div class="range-header">
+              <span>Срок лизинга:</span>
+              <span id="termValText" style="color: var(--zoomlion-green-dark); font-weight: 700;">36 мес.</span>
+            </div>
+            <input type="range" id="termRange" class="range-slider" min="12" max="60" step="12" value="36">
+          </div>
+        </div>
+
+        <div class="calc-result-card">
+          <div>
+            <span class="badge badge-green" style="margin-bottom: 16px;">Предварительный расчет</span>
+            <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 4px;">Ежемесячный платеж:</div>
+            <div class="calc-result-price" id="monthlyPaymentText">0 ₽/мес</div>
+
+            <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border-color);">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                <span style="color: var(--text-muted);">Размер аванса:</span>
+                <strong id="advanceAmountText">0 ₽</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--text-muted);">Налоговая выгода (НДС + Прибыль):</span>
+                <strong style="color: var(--zoomlion-green-dark);">до 40%</strong>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-primary btn-quote-trigger" style="margin-top: 32px; width: 100%; padding: 14px; font-size: 1.05rem;">
+            Получить коммерческое предложение
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Related Products -->
+    <section>
+      <div class="section-header">
+        <span class="badge badge-blue">Сравните варианты</span>
+        <h2 class="section-title">Другие модели в наличии</h2>
+        <p class="section-subtitle">Похожие автобетононасосы ZOOMLION из каталога</p>
+      </div>
+
+      <div class="cards-grid" id="relatedModelsGrid">
+        <!-- JS populated -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Quote Modal -->
+  <div class="modal-backdrop" id="quoteModal">
+    <div class="modal-window" style="max-width: 500px;">
+      <button class="modal-close-btn" id="quoteCloseBtn">✕</button>
+      <div class="modal-content">
+        <h2 style="font-size: 1.8rem; margin-bottom: 8px;">Запросить КП</h2>
+        <p style="color: var(--text-muted); margin-bottom: 24px;">Оставьте контакты для получения персонального предложения по этой модели</p>
+
+        <form id="quoteForm">
+          <input type="hidden" id="quoteModelInput" name="model">
+
+          <div class="filter-group" style="margin-bottom: 16px;">
+            <label for="userName" class="filter-label">Ваше имя</label>
+            <input type="text" id="userName" class="filter-input" placeholder="Иван Иванов" required>
+          </div>
+
+          <div class="filter-group" style="margin-bottom: 16px;">
+            <label for="userPhone" class="filter-label">Номер телефона</label>
+            <input type="tel" id="userPhone" class="filter-input" placeholder="+7 (999) 000-00-00" required>
+          </div>
+
+          <div class="filter-group" style="margin-bottom: 24px;">
+            <label for="userComment" class="filter-label">Город / Примечание</label>
+            <input type="text" id="userComment" class="filter-input" placeholder="например, доставка в Забайкальск">
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 14px; font-size: 1.05rem;">
+            Отправить заявку
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer style="background: #0F172A; color: #94A3B8; padding: 60px 0 30px; border-top: 1px solid #1E293B;" id="contacts">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 40px; margin-bottom: 40px;">
+        <div>
+          <div style="font-family: var(--font-heading); font-size: 1.4rem; font-weight: 800; color: #fff; margin-bottom: 16px;">
+            ZOOMLION
+          </div>
+          <p style="font-size: 0.9rem; margin-bottom: 16px;">
+            Официальные коммерческие предложения на поставку автобетононасосов ZOOMLION по всей России.
+          </p>
+        </div>
+
+        <div>
+          <h4 style="color: #fff; margin-bottom: 16px;">Контакты менеджеров:</h4>
+          <ul style="list-style: none; padding: 0; font-size: 0.9rem;">
+            <li style="margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7FB300" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <span id="footerManager1">Роженцев Артем Викторович: +7 906 113 51 16</span>
+            </li>
+            <li style="margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7FB300" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <span id="footerManager2">Рылов Роман: +7 967 246 40 60</span>
+            </li>
+            <li style="display: flex; align-items: center; gap: 8px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0284C7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              <span id="footerLocations">Склады наличия: Пермь, Забайкальск, Москва</span>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 style="color: #fff; margin-bottom: 16px;">Быстрая навигация:</h4>
+          <ul style="list-style: none; padding: 0; font-size: 0.9rem;">
+            <li style="margin-bottom: 8px;"><a href="./index.html#catalog" style="color: #94A3B8;">Каталог бетононасосов</a></li>
+            <li style="margin-bottom: 8px;"><a href="#calculator" style="color: #94A3B8;">Калькулятор лизинга</a></li>
+            <li><a href="./index.html#advantages" style="color: #94A3B8;">Преимущества ZOOMLION</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="border-top: 1px solid #1E293B; padding-top: 24px; font-size: 0.8rem; text-align: center;">
+        © 2026 ZOOMLION Бетононасосы. Все права защищены. Цены указаны DDP с учетом НДС 20-22%.
+      </div>
+    </div>
+  </footer>
+
+  <script src="./src/js/product.js"></script>
+</body>
+</html>

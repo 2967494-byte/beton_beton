@@ -30,45 +30,182 @@
     </div>
   </header>
 
-  <main class="container" style="padding: 40px 24px 80px;">
-    <!-- Top Action Bar -->
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; flex-wrap: wrap; gap: 16px;">
-      <div>
-        <h1 style="font-size: 2rem; margin-bottom: 4px;">Каталог автобетононасосов</h1>
-        <p style="color: var(--text-muted);">Редактирование фото, названий, ТТХ, цен и статусов наличия. Все изменения мгновенно отражаются на сайте.</p>
-      </div>
-
-      <button class="btn btn-primary" id="addModelBtn" style="padding: 12px 24px; font-size: 1rem;">
-        + Добавить автобетононасос
+  <main class="container" style="padding: 30px 24px 80px;">
+    <!-- Navigation Tabs -->
+    <div style="display: flex; gap: 16px; margin-bottom: 32px; border-bottom: 2px solid #E2E8F0; padding-bottom: 12px;">
+      <button class="pill-btn active" id="tabCatalogBtn" style="font-size: 1rem; padding: 10px 24px;">
+        🚚 Каталог автобетононасосов
+      </button>
+      <button class="pill-btn" id="tabSettingsBtn" style="font-size: 1rem; padding: 10px 24px;">
+        ⚙️ Контакты и Преимущества
       </button>
     </div>
 
-    <!-- Models Table Card -->
-    <div style="background: #FFFFFF; border-radius: 16px; border: 1px solid #E2E8F0; box-shadow: var(--shadow-md); overflow: hidden;">
-      <div style="padding: 20px 24px; border-bottom: 1px solid #E2E8F0; display: flex; justify-content: space-between; align-items: center;">
-        <input type="text" id="adminSearchInput" class="filter-input" placeholder="Поиск по названию или шасси..." style="max-width: 360px;">
-        <div style="font-size: 0.9rem; color: var(--text-muted);">
-          Всего позиций: <strong id="adminCountText" style="color: var(--text-main);">0</strong>
+    <!-- TAB 1: Catalog Management -->
+    <div id="catalogTab">
+      <!-- Top Action Bar -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+        <div>
+          <h1 style="font-size: 1.8rem; margin-bottom: 4px;">Каталог спецтехники</h1>
+          <p style="color: var(--text-muted);">Редактирование фото, названий, ТТХ, цен и статусов наличия.</p>
         </div>
+
+        <button class="btn btn-primary" id="addModelBtn" style="padding: 12px 24px; font-size: 1rem;">
+          + Добавить автобетононасос
+        </button>
       </div>
 
-      <div style="overflow-x: auto;">
-        <table class="admin-table">
-          <thead>
-            <tr>
-              <th>Фото</th>
-              <th>Модель & Шасси</th>
-              <th>Высота / Сложение</th>
-              <th>Стоимость (DDP)</th>
-              <th>Статус / Склад</th>
-              <th style="text-align: right;">Действия</th>
-            </tr>
-          </thead>
-          <tbody id="adminTableBody">
-            <!-- Rendered by admin.js -->
-          </tbody>
-        </table>
+      <!-- Models Table Card -->
+      <div style="background: #FFFFFF; border-radius: 16px; border: 1px solid #E2E8F0; box-shadow: var(--shadow-md); overflow: hidden;">
+        <div style="padding: 20px 24px; border-bottom: 1px solid #E2E8F0; display: flex; justify-content: space-between; align-items: center;">
+          <input type="text" id="adminSearchInput" class="filter-input" placeholder="Поиск по названию или шасси..." style="max-width: 360px;">
+          <div style="font-size: 0.9rem; color: var(--text-muted);">
+            Всего позиций: <strong id="adminCountText" style="color: var(--text-main);">0</strong>
+          </div>
+        </div>
+
+        <div style="overflow-x: auto;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Фото</th>
+                <th>Модель & Шасси</th>
+                <th>Высота / Сложение</th>
+                <th>Стоимость (DDP)</th>
+                <th>Статус / Склад</th>
+                <th style="text-align: right;">Действия</th>
+              </tr>
+            </thead>
+            <tbody id="adminTableBody">
+              <!-- Rendered by admin.js -->
+            </tbody>
+          </table>
+        </div>
       </div>
+    </div>
+
+    <!-- TAB 2: Site Settings (Contacts & Advantages) -->
+    <div id="settingsTab" style="display: none;">
+      <form id="siteSettingsForm">
+        <!-- Header Contacts Box -->
+        <div style="background: #FFFFFF; border-radius: 16px; border: 1px solid #E2E8F0; padding: 32px; margin-bottom: 32px; box-shadow: var(--shadow-md);">
+          <h2 style="font-size: 1.4rem; margin-bottom: 8px; color: var(--text-main);">📞 Контакты в шапке сайта</h2>
+          <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 0.95rem;">Управление подписью и номером телефона на главной панели</p>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;">
+            <div class="filter-group">
+              <label class="filter-label">Подпись над телефоном</label>
+              <input type="text" id="settingHeaderPhoneLabel" class="filter-input" placeholder="Отдел продаж:">
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label">Отображаемый телефон</label>
+              <input type="text" id="settingHeaderPhone" class="filter-input" placeholder="+7 (906) 113-51-16">
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label">Номер для клика (tel:)</label>
+              <input type="text" id="settingHeaderPhoneRaw" class="filter-input" placeholder="+79061135116">
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label">Текст кнопки в шапке</label>
+              <input type="text" id="settingHeaderQuoteBtn" class="filter-input" placeholder="Запросить КП">
+            </div>
+          </div>
+        </div>
+
+        <!-- Advantages Section Box -->
+        <div style="background: #FFFFFF; border-radius: 16px; border: 1px solid #E2E8F0; padding: 32px; margin-bottom: 32px; box-shadow: var(--shadow-md);">
+          <h2 style="font-size: 1.4rem; margin-bottom: 8px; color: var(--text-main);">🏆 Блок «Почему выбирают АБН ZOOMLION»</h2>
+          <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 0.95rem;">Заголовки и 3 карточки преимуществ на главной странице</p>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px;">
+            <div class="filter-group">
+              <label class="filter-label">Заголовок блока</label>
+              <input type="text" id="settingAdvTitle" class="filter-input" placeholder="Почему выбирают АБН ZOOMLION">
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label">Подзаголовок блока</label>
+              <input type="text" id="settingAdvSubtitle" class="filter-input" placeholder="Мировой лидер в производстве бетоноподающей техники...">
+            </div>
+          </div>
+
+          <h3 style="font-size: 1.1rem; margin-bottom: 16px; color: var(--text-secondary);">3 Карточки преимуществ:</h3>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+            <!-- Advantage 1 -->
+            <div style="background: #F8FAFC; padding: 20px; border-radius: 12px; border: 1px solid #E2E8F0;">
+              <div style="font-weight: 700; color: #7FB300; margin-bottom: 8px;">Карточка 1</div>
+              <div class="filter-group" style="margin-bottom: 12px;">
+                <label class="filter-label">Заголовок</label>
+                <input type="text" id="settingAdv1Title" class="filter-input" placeholder="Инновационные стрелы 5RZ и 6RZ">
+              </div>
+              <div class="filter-group">
+                <label class="filter-label">Описание</label>
+                <textarea id="settingAdv1Text" class="filter-input" rows="3" style="resize: vertical;"></textarea>
+              </div>
+            </div>
+
+            <!-- Advantage 2 -->
+            <div style="background: #F8FAFC; padding: 20px; border-radius: 12px; border: 1px solid #E2E8F0;">
+              <div style="font-weight: 700; color: #0284C7; margin-bottom: 8px;">Карточка 2</div>
+              <div class="filter-group" style="margin-bottom: 12px;">
+                <label class="filter-label">Заголовок</label>
+                <input type="text" id="settingAdv2Title" class="filter-input" placeholder="Надежные шасси SITRAK & SCANIA">
+              </div>
+              <div class="filter-group">
+                <label class="filter-label">Описание</label>
+                <textarea id="settingAdv2Text" class="filter-input" rows="3" style="resize: vertical;"></textarea>
+              </div>
+            </div>
+
+            <!-- Advantage 3 -->
+            <div style="background: #F8FAFC; padding: 20px; border-radius: 12px; border: 1px solid #E2E8F0;">
+              <div style="font-weight: 700; color: #D97706; margin-bottom: 8px;">Карточка 3</div>
+              <div class="filter-group" style="margin-bottom: 12px;">
+                <label class="filter-label">Заголовок</label>
+                <input type="text" id="settingAdv3Title" class="filter-input" placeholder="Производительность до 180 м³/ч">
+              </div>
+              <div class="filter-group">
+                <label class="filter-label">Описание</label>
+                <textarea id="settingAdv3Text" class="filter-input" rows="3" style="resize: vertical;"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer Managers Box -->
+        <div style="background: #FFFFFF; border-radius: 16px; border: 1px solid #E2E8F0; padding: 32px; margin-bottom: 32px; box-shadow: var(--shadow-md);">
+          <h2 style="font-size: 1.4rem; margin-bottom: 8px; color: var(--text-main);">👨‍💼 Блок «Контакты менеджеров» в футере</h2>
+          <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 0.95rem;">Управление именами менеджеров и локациями складов</p>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+            <div class="filter-group">
+              <label class="filter-label">Менеджер 1</label>
+              <input type="text" id="settingFooterManager1" class="filter-input" placeholder="Роженцев Артем Викторович: +7 906 113 51 16">
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label">Менеджер 2</label>
+              <input type="text" id="settingFooterManager2" class="filter-input" placeholder="Рылов Роман: +7 967 246 40 60">
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label">Склады наличия</label>
+              <input type="text" id="settingFooterLocations" class="filter-input" placeholder="Пермь, Забайкальск, Москва">
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Settings Button -->
+        <div style="display: flex; justify-content: flex-end;">
+          <button type="submit" class="btn btn-primary" style="padding: 14px 40px; font-size: 1.1rem;">
+            💾 Сохранить настройки контента
+          </button>
+        </div>
+      </form>
     </div>
   </main>
 
