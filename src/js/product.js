@@ -2,32 +2,31 @@
 document.addEventListener('DOMContentLoaded', async () => {
   let allModels = [];
 
-  // Fetch models data
+  // Load Models Data (1. localStorage, 2. fetch models.json, 3. DEFAULT_ZOOMLION_MODELS)
   const localData = localStorage.getItem('zoomlion_models');
   if (localData) {
     try {
       allModels = JSON.parse(localData);
-    } catch (e) {
-      console.error('Failed to parse localStorage models:', e);
-    }
+    } catch (e) {}
   }
 
-  if (!allModels || allModels.length === 0) {
+  if (!Array.isArray(allModels) || allModels.length === 0) {
     try {
       const response = await fetch('./src/data/models.json');
       allModels = await response.json();
-    } catch (err) {
-      console.error('Failed to load models:', err);
-      return;
-    }
+    } catch (err) {}
+  }
+
+  if (!Array.isArray(allModels) || allModels.length === 0) {
+    allModels = window.DEFAULT_ZOOMLION_MODELS || [];
   }
 
   // Apply Site Settings
   applySiteSettings();
 
-  // Get Model ID from URL
+  // Get Model ID from URL or window.FORCE_MODEL_ID
   const urlParams = new URLSearchParams(window.location.search);
-  const targetId = urlParams.get('id') || urlParams.get('model') || allModels[0]?.id;
+  const targetId = window.FORCE_MODEL_ID || urlParams.get('id') || urlParams.get('model') || allModels[0]?.id;
 
   const currentModel = allModels.find(m => m.id === targetId) || allModels[0];
   if (!currentModel) return;
@@ -52,11 +51,31 @@ document.addEventListener('DOMContentLoaded', async () => {
     const breadcrumb = document.getElementById('breadcrumbCurrent');
     if (breadcrumb) breadcrumb.textContent = `${model.name} (${model.chassis})`;
 
-    // Image
+    // Images Gallery (Up to 6 Photos)
+    const imagesList = model.images && model.images.length > 0 ? model.images : [model.image];
     const mainImg = document.getElementById('productImage');
     if (mainImg) {
-      mainImg.src = model.image;
+      mainImg.src = imagesList[0] || model.image;
       mainImg.alt = model.name;
+    }
+
+    const thumbsContainer = document.getElementById('productThumbnailsGrid');
+    if (thumbsContainer) {
+      thumbsContainer.innerHTML = '';
+      if (imagesList.length > 1) {
+        imagesList.forEach((src, idx) => {
+          const thumb = document.createElement('div');
+          thumb.style.cssText = `height: 60px; border-radius: 8px; overflow: hidden; border: 2px solid ${idx === 0 ? '#7FB300' : 'transparent'}; cursor: pointer; transition: all 0.2s ease;`;
+          thumb.innerHTML = `<img src="${src}" style="width: 100%; height: 100%; object-fit: cover;">`;
+
+          thumb.addEventListener('click', () => {
+            if (mainImg) mainImg.src = src;
+            Array.from(thumbsContainer.children).forEach(child => child.style.borderColor = 'transparent');
+            thumb.style.borderColor = '#7FB300';
+          });
+          thumbsContainer.appendChild(thumb);
+        });
+      }
     }
 
     // Header info

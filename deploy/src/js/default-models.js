@@ -1,4 +1,4 @@
-[
+window.DEFAULT_ZOOMLION_MODELS = [
   {
     "id": "zoomlion-32x-5rz-isuzu",
     "name": "ZOOMLION 32X-5RZ",
@@ -338,4 +338,4 @@
       "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
     ]
   }
-]
+];

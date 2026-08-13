@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           <img src="${m.image}" alt="${m.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1541888946425-d0fbb186a5b2?auto=format&fit=crop&w=300&q=80'">
         </td>
         <td>
-          <a href="./product.html?id=${m.id}" target="_blank" style="font-weight: 700; color: #0F172A; font-size: 1.05rem; text-decoration: none;" onmouseover="this.style.color='#7FB300'" onmouseout="this.style.color='#0F172A'">
+          <a href="./products/${m.id}.html" target="_blank" style="font-weight: 700; color: #0F172A; font-size: 1.05rem; text-decoration: none;" onmouseover="this.style.color='#7FB300'" onmouseout="this.style.color='#0F172A'">
             ${m.name} ↗
           </a>
           <div style="font-size: 0.85rem; color: #64748B;">${m.chassis}</div>
@@ -138,6 +138,201 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (searchInput) searchInput.addEventListener('input', renderAdminTable);
 
+  // --- MULTI-PHOTO GALLERY & CROP EDITOR LOGIC ---
+  let currentModelImages = [];
+  let activeSlotIndex = 0;
+  let cropLoadedImage = null;
+  let cropZoom = 100;
+  let cropAngle = 0;
+
+  const adminPhotoSlotsGrid = document.getElementById('adminPhotoSlotsGrid');
+  const cropModal = document.getElementById('cropModal');
+  const cropModalCloseBtn = document.getElementById('cropModalCloseBtn');
+  const cropCanvas = document.getElementById('cropCanvas');
+  const cropZoomRange = document.getElementById('cropZoomRange');
+  const cropZoomText = document.getElementById('cropZoomText');
+  const cropRotateBtn = document.getElementById('cropRotateBtn');
+  const cropResetBtn = document.getElementById('cropResetBtn');
+  const cropSelectFileBtn = document.getElementById('cropSelectFileBtn');
+  const cropFileInput = document.getElementById('cropFileInput');
+  const cropApplyBtn = document.getElementById('cropApplyBtn');
+
+  function renderPhotoSlots() {
+    if (!adminPhotoSlotsGrid) return;
+    adminPhotoSlotsGrid.innerHTML = '';
+
+    for (let i = 0; i < 6; i++) {
+      const imgUrl = currentModelImages[i] || '';
+      const slotCard = document.createElement('div');
+      slotCard.style.cssText = 'background: #fff; border: 1px solid #E2E8F0; border-radius: 8px; padding: 6px; text-align: center; position: relative;';
+
+      slotCard.innerHTML = `
+        <div style="font-size: 0.75rem; font-weight: 700; color: ${i === 0 ? '#7FB300' : '#64748B'}; margin-bottom: 4px;">
+          ${i === 0 ? 'Обложка ★' : 'Фото ' + (i + 1)}
+        </div>
+        <div style="height: 65px; background: #F1F5F9; border-radius: 6px; overflow: hidden; display: flex; align-items: center; justify-content: center; margin-bottom: 6px; cursor: pointer;" onclick="window.triggerCropModal(${i})">
+          ${imgUrl 
+            ? `<img src="${imgUrl}" style="width: 100%; height: 100%; object-fit: cover;">` 
+            : `<span style="font-size: 1.2rem; color: #94A3B8;">+</span>`
+          }
+        </div>
+        <div style="display: flex; gap: 4px; justify-content: center;">
+          <button type="button" class="btn btn-outline" style="padding: 2px 6px; font-size: 0.7rem;" onclick="window.triggerCropModal(${i})">
+            ${imgUrl ? '✂️' : '📁'}
+          </button>
+          ${imgUrl ? `<button type="button" class="btn btn-outline" style="padding: 2px 6px; font-size: 0.7rem; color: #EF4444;" onclick="window.removePhotoSlot(${i})">🗑️</button>` : ''}
+        </div>
+      `;
+      adminPhotoSlotsGrid.appendChild(slotCard);
+    }
+  }
+
+  window.triggerCropModal = (index) => {
+    activeSlotIndex = index;
+    cropZoom = 100;
+    cropAngle = 0;
+    if (cropZoomRange) cropZoomRange.value = 100;
+    if (cropZoomText) cropZoomText.textContent = '100%';
+
+    const existingImg = currentModelImages[index];
+    if (existingImg) {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        cropLoadedImage = img;
+        drawCropCanvas();
+        if (cropModal) cropModal.classList.add('active');
+      };
+      img.src = existingImg;
+    } else {
+      cropLoadedImage = null;
+      if (cropCanvas) {
+        const ctx = cropCanvas.getContext('2d');
+        ctx.clearRect(0, 0, cropCanvas.width, cropCanvas.height);
+      }
+      if (cropModal) cropModal.classList.add('active');
+      if (cropFileInput) cropFileInput.click();
+    }
+  };
+
+  window.removePhotoSlot = (index) => {
+    currentModelImages[index] = '';
+    if (index === 0) {
+      document.getElementById('fieldImage').value = currentModelImages.find(Boolean) || '';
+    }
+    renderPhotoSlots();
+  };
+
+  if (cropSelectFileBtn && cropFileInput) {
+    cropSelectFileBtn.addEventListener('click', () => cropFileInput.click());
+    cropFileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        const img = new Image();
+        img.onload = () => {
+          cropLoadedImage = img;
+          drawCropCanvas();
+        };
+        img.src = evt.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  if (cropZoomRange) {
+    cropZoomRange.addEventListener('input', (e) => {
+      cropZoom = parseInt(e.target.value);
+      if (cropZoomText) cropZoomText.textContent = `${cropZoom}%`;
+      drawCropCanvas();
+    });
+  }
+
+  if (cropRotateBtn) {
+    cropRotateBtn.addEventListener('click', () => {
+      cropAngle = (cropAngle + 90) % 360;
+      drawCropCanvas();
+    });
+  }
+
+  if (cropResetBtn) {
+    cropResetBtn.addEventListener('click', () => {
+      cropZoom = 100;
+      cropAngle = 0;
+      if (cropZoomRange) cropZoomRange.value = 100;
+      if (cropZoomText) cropZoomText.textContent = '100%';
+      drawCropCanvas();
+    });
+  }
+
+  function drawCropCanvas() {
+    if (!cropCanvas || !cropLoadedImage) return;
+    const ctx = cropCanvas.getContext('2d');
+    cropCanvas.width = 600;
+    cropCanvas.height = 360;
+
+    ctx.clearRect(0, 0, cropCanvas.width, cropCanvas.height);
+    ctx.save();
+
+    ctx.translate(cropCanvas.width / 2, cropCanvas.height / 2);
+    ctx.rotate((cropAngle * Math.PI) / 180);
+    const scale = (cropZoom / 100);
+
+    const fitScale = Math.min(cropCanvas.width / cropLoadedImage.width, cropCanvas.height / cropLoadedImage.height) * scale;
+    const drawW = cropLoadedImage.width * fitScale;
+    const drawH = cropLoadedImage.height * fitScale;
+
+    ctx.drawImage(cropLoadedImage, -drawW / 2, -drawH / 2, drawW, drawH);
+    ctx.restore();
+  }
+
+  if (cropApplyBtn) {
+    cropApplyBtn.addEventListener('click', () => {
+      if (!cropLoadedImage) {
+        alert('Пожалуйста, выберите изображение с диска');
+        return;
+      }
+
+      // Export compressed WebP/JPEG 1200x800
+      const exportCanvas = document.createElement('canvas');
+      exportCanvas.width = 1200;
+      exportCanvas.height = 800;
+      const ctx = exportCanvas.getContext('2d');
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, 1200, 800);
+
+      ctx.save();
+      ctx.translate(600, 400);
+      ctx.rotate((cropAngle * Math.PI) / 180);
+      const scale = (cropZoom / 100);
+
+      const fitScale = Math.min(1200 / cropLoadedImage.width, 800 / cropLoadedImage.height) * scale;
+      const drawW = cropLoadedImage.width * fitScale;
+      const drawH = cropLoadedImage.height * fitScale;
+
+      ctx.drawImage(cropLoadedImage, -drawW / 2, -drawH / 2, drawW, drawH);
+      ctx.restore();
+
+      const dataUrl = exportCanvas.toDataURL('image/jpeg', 0.88);
+      currentModelImages[activeSlotIndex] = dataUrl;
+
+      if (activeSlotIndex === 0) {
+        document.getElementById('fieldImage').value = dataUrl;
+      }
+
+      renderPhotoSlots();
+      if (cropModal) cropModal.classList.remove('active');
+    });
+  }
+
+  if (cropModalCloseBtn) {
+    cropModalCloseBtn.addEventListener('click', () => {
+      if (cropModal) cropModal.classList.remove('active');
+    });
+  }
+
   // Open Edit Modal
   function openEditModal(modelId = null) {
     if (modelId) {
@@ -162,12 +357,16 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('fieldManager').value = m.manager || '';
       document.getElementById('fieldPhone').value = m.phone || '';
       document.getElementById('fieldHighlights').value = (m.highlights || []).join(', ');
+
+      currentModelImages = m.images && m.images.length > 0 ? [...m.images] : [m.image];
     } else {
       formModalTitle.textContent = 'Добавить новый автобетононасос';
       modelForm.reset();
       document.getElementById('fieldId').value = '';
+      currentModelImages = [];
     }
 
+    renderPhotoSlots();
     editModal.classList.add('active');
   }
 
@@ -199,12 +398,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       const price_formatted = document.getElementById('fieldPriceFormatted').value.trim();
       const availability = document.getElementById('fieldAvailability').value.trim();
       const location = document.getElementById('fieldLocation').value.trim();
-      const image = document.getElementById('fieldImage').value.trim();
+      const image = currentModelImages.find(Boolean) || document.getElementById('fieldImage').value.trim();
       const manager = document.getElementById('fieldManager').value.trim();
       const phone = document.getElementById('fieldPhone').value.trim();
 
       const highlightsRaw = document.getElementById('fieldHighlights').value;
       const highlights = highlightsRaw.split(',').map(s => s.trim()).filter(Boolean);
+      const images = currentModelImages.filter(Boolean);
 
       if (existingId) {
         // Edit existing
@@ -225,6 +425,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             availability,
             location,
             image,
+            images: images.length > 0 ? images : [image],
             manager,
             phone,
             highlights,
@@ -258,6 +459,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           manager: manager || 'Отдел продаж',
           phone: phone || '+7 906 113 51 16',
           image,
+          images: images.length > 0 ? images : [image],
           highlights,
           specs: {
             'Высота подачи': `${boom_height} м`,

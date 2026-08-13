@@ -2,25 +2,27 @@
 document.addEventListener('DOMContentLoaded', async () => {
   let allModels = [];
 
-  // Fetch models data (localStorage priority for admin panel sync)
+  // Load Models Data (1. localStorage, 2. fetch models.json, 3. DEFAULT_ZOOMLION_MODELS)
   const localData = localStorage.getItem('zoomlion_models');
   if (localData) {
     try {
       allModels = JSON.parse(localData);
-    } catch (e) {
-      console.error('Failed to parse localStorage models:', e);
-    }
+    } catch (e) {}
   }
 
-  if (!allModels || allModels.length === 0) {
+  if (!Array.isArray(allModels) || allModels.length === 0) {
     try {
       const response = await fetch('./src/data/models.json');
       allModels = await response.json();
-      localStorage.setItem('zoomlion_models', JSON.stringify(allModels));
-    } catch (err) {
-      console.error('Failed to load models:', err);
-      return;
-    }
+    } catch (err) {}
+  }
+
+  if (!Array.isArray(allModels) || allModels.length === 0) {
+    allModels = window.DEFAULT_ZOOMLION_MODELS || [];
+  }
+
+  if (Array.isArray(allModels) && allModels.length > 0) {
+    localStorage.setItem('zoomlion_models', JSON.stringify(allModels));
   }
 
   // Apply dynamic Site Settings (Header, Advantages, Footer)
@@ -109,6 +111,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   applySiteSettings();
+  const gridContainer = document.getElementById('modelsGrid');
   const searchInput = document.getElementById('searchInput');
   const heightFilter = document.getElementById('heightFilter');
   const chassisFilter = document.getElementById('chassisFilter');
@@ -150,7 +153,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       card.innerHTML = `
         <div class="card-img-container">
-          <a href="./product.html?id=${model.id}">
+          <a href="./products/${model.id}.html">
             <img src="${model.image}" alt="${model.name}" class="card-img" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1541888946425-d0fbb186a5b2?auto=format&fit=crop&w=800&q=80'">
           </a>
           <div class="card-badge-top">
@@ -162,7 +165,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         </div>
         <div class="card-body">
           <h3 class="card-title">
-            <a href="./product.html?id=${model.id}">${model.name}</a>
+            <a href="./products/${model.id}.html">${model.name}</a>
           </h3>
           <div class="card-chassis">Шасси: <strong>${model.chassis}</strong></div>
 
@@ -190,7 +193,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               <span class="price-lbl">Стоимость DDP:</span>
               <span class="price-amount">${model.price_formatted}</span>
             </div>
-            <a href="./product.html?id=${model.id}" class="btn btn-primary">
+            <a href="./products/${model.id}.html" class="btn btn-primary">
               Характеристики ↗
             </a>
           </div>
